@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import nookies from 'nookies';
 
 const countries = [
   {
@@ -21,6 +22,10 @@ const Header = () => {
     // /country
     router.push(`/[country]`, `/${e.target.value}`);
   };
+
+  useEffect(() => {
+    nookies.set(null, 'defaultCountry', selectedCountry, { maxAge: 30 * 24 * 60 * 60, path: '/' });
+  }, [selectedCountry]);
 
   const renderCountries = () => {
     return countries.map((country) => {

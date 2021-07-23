@@ -2,6 +2,7 @@ import axios from 'axios';
 import parse from 'html-react-parser';
 import Error from 'next/error';
 import Cast from '../../components/Cast/index';
+import { requireAuthentication } from '../../utils/requireAuthentication';
 
 const ShowDetails = ({ show = {}, statusCode }) => {
   const { name, image, summary, _embedded } = show;
@@ -28,7 +29,7 @@ const ShowDetails = ({ show = {}, statusCode }) => {
   );
 };
 
-export const getServerSideProps = async ({ query }) => {
+export const getServerSideProps = requireAuthentication(async ({ query }) => {
   try {
     const { showId } = query;
     const response = await axios.get(`https://api.tvmaze.com/shows/${showId}?embed=cast`);
@@ -39,6 +40,6 @@ export const getServerSideProps = async ({ query }) => {
       props: { statusCode: error.response ? error.response.status : 500 },
     };
   }
-};
+});
 
 export default ShowDetails;
