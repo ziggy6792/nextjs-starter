@@ -1,5 +1,7 @@
 import axios from 'axios';
 import Error from 'next/error';
+import Header from '../../components/Header';
+import Thumbnail from '../../components/Thumbnail';
 
 const Home = ({ shows, country, statusCode }) => {
   if (statusCode) {
@@ -10,7 +12,11 @@ const Home = ({ shows, country, statusCode }) => {
     return shows.map((showItem, index) => {
       const { show } = showItem;
 
-      return <li key={index}>{show.name}</li>;
+      return (
+        <li key={index}>
+          <Thumbnail imageUrl={(show.image && show.image.medium) || undefined} caption={show.name} href='/[country]/[showId]' as={`/${country}/${show.id}`} />
+        </li>
+      );
     });
   };
 
