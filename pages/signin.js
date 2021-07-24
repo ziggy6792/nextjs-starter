@@ -37,7 +37,7 @@ const parsePlannedRoute = (url) => {
     return { href: href.join(''), as: as.join('') };
   } catch (err) {
     console.log('err', err);
-    return { href: null, as: null };
+    return null;
   }
 };
 

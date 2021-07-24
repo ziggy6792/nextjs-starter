@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import nookies from 'nookies';
+import Link from 'next/link';
+import { isAuthenticated } from '../../utils/requireAuthentication';
 
 const countries = [
   {
@@ -24,8 +26,12 @@ const Header = () => {
   };
 
   useEffect(() => {
-    nookies.set(null, 'defaultCountry', selectedCountry, { maxAge: 30 * 24 * 60 * 60, path: '/' });
+    if (selectedCountry) {
+      nookies.set(null, 'defaultCountry', selectedCountry, { maxAge: 30 * 24 * 60 * 60, path: '/' });
+    }
   }, [selectedCountry]);
+
+  const [isAuth, setIsAuth] = useState(false);
 
   const renderCountries = () => {
     return countries.map((country) => {
@@ -42,6 +48,18 @@ const Header = () => {
       <select value={selectedCountry} onChange={handleChange}>
         {renderCountries()}
       </select>
+
+      {isAuthenticated() && (
+        <Link href='/[country]' as={`/${selectedCountry}`}>
+          <a
+            onClick={() => {
+              console.log('sign out!');
+              nookies.destroy(null, 'token');
+            }}>
+            sign out
+          </a>
+        </Link>
+      )}
 
       <style jsx>{`
         .header {
