@@ -24,22 +24,22 @@ const signIn = async (signinInfo) => {
   // return axios.post('https://iwallet-api.herokuapp.com/api/auth/signin', { ...signinInfo });
 };
 
-const parsePlannedRoute = (url) => {
-  try {
-    const href = [];
-    const as = [];
-    var query = url.split('?')[1];
-    query.split('&').forEach(function (part) {
-      var item = part.split('=');
-      href.push(`/[${item[0]}]`);
-      as.push(`/${item[1]}`);
-    });
-    return { href: href.join(''), as: as.join('') };
-  } catch (err) {
-    console.log('err', err);
-    return null;
-  }
-};
+// const parsePlannedRoute = (url) => {
+//   try {
+//     const href = [];
+//     const as = [];
+//     var query = url.split('?')[1];
+//     query.split('&').forEach(function (part) {
+//       var item = part.split('=');
+//       href.push(`/[${item[0]}]`);
+//       as.push(`/${item[1]}`);
+//     });
+//     return { href: href.join(''), as: as.join('') };
+//   } catch (err) {
+//     console.log('err', err);
+//     return null;
+//   }
+// };
 
 const Signin = () => {
   const [signinInfo, setSigninInfo] = useState(initialState);
@@ -63,8 +63,8 @@ const Signin = () => {
 
       const parsedPlannedRoute = parsePlannedRoute(plannedRoute);
 
-      const plannedHrefRoute = parsedPlannedRoute ? parsedPlannedRoute.href : '/[country]';
-      const plannedAsRoute = parsedPlannedRoute ? parsedPlannedRoute.as : '/us';
+      const plannedHrefRoute = plannedRoute ? plannedRoute : '/[country]';
+      const plannedAsRoute = plannedRoute ? plannedRoute.split('?')[0] : '/us';
 
       router.replace(plannedHrefRoute, plannedAsRoute);
     } catch (error) {

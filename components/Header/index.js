@@ -54,7 +54,7 @@ const Header = () => {
           <a
             onClick={() => {
               console.log('sign out!');
-              nookies.destroy(null, 'token');
+              nookies.destroy(null, 'token', { path: '/' });
             }}>
             sign out
           </a>
