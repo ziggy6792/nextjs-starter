@@ -5,11 +5,15 @@ const CastMemberDetails = (props) => {
   return <img src={props.person.image.medium} />;
 };
 
-CastMemberDetails.getInitialProps = async ({ query }) => {
+export const getServerSideProps = async ({ query }) => {
+  console.log('query', query);
+
   const response = await axios.get(`https://api.tvmaze.com/people/${query.personId}`);
 
   return {
-    person: response.data,
+    props: {
+      person: response.data,
+    },
   };
 };
 

@@ -8,9 +8,9 @@ const authenticate = (context) => {
 
   const plannedRoute = { as: context.asPath, href: context.pathname };
 
-  console.log('resolvedUrl', context.resolvedUrl);
+  // console.log('resolvedUrl', context.resolvedUrl);
 
-  console.log('context', context);
+  // console.log('context', context);
   // console.log('getPathname', getPathname(context.resolvedUrl));
 
   // console.log('resolvedUrl', context.req.url.resolvedUrl);

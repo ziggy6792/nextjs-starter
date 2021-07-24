@@ -7,7 +7,7 @@ const Cast = ({ cast }) => {
 
       return (
         <li key={index}>
-          <Thumbnail imageUrl={(image && image.medium) || undefined} caption={name} small href={`/cast?personId=${id}`} as={`/cast/${id}`}></Thumbnail>
+          <Thumbnail imageUrl={(image && image.medium) || undefined} caption={name} small href={`/cast/personId`} as={`/cast/${id}`}></Thumbnail>
         </li>
       );
     });
