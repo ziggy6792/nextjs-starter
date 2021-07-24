@@ -14,6 +14,33 @@ const initialState = {
   password: '',
 };
 
+const signIn = async (signinInfo) => {
+  return {
+    data: {
+      token:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+    },
+  };
+  // return axios.post('https://iwallet-api.herokuapp.com/api/auth/signin', { ...signinInfo });
+};
+
+const parsePlannedRoute = (url) => {
+  try {
+    const href = [];
+    const as = [];
+    var query = url.split('?')[1];
+    query.split('&').forEach(function (part) {
+      var item = part.split('=');
+      href.push(`/[${item[0]}]`);
+      as.push(`/${item[1]}`);
+    });
+    return { href: href.join(''), as: as.join('') };
+  } catch (err) {
+    console.log('err', err);
+    return { href: null, as: null };
+  }
+};
+
 const Signin = () => {
   const [signinInfo, setSigninInfo] = useState(initialState);
   const [error, setError] = useState('');
@@ -29,12 +56,12 @@ const Signin = () => {
     }
 
     try {
-      const response = await axios.post('https://iwallet-api.herokuapp.com/api/auth/signin', { ...signinInfo });
+      const response = await signIn(signinInfo);
 
       cookies.set(null, 'token', response.data.token, { path: '/' });
       const { plannedRoute } = cookies.get();
 
-      const parsedPlannedRoute = plannedRoute && JSON.parse(plannedRoute);
+      const parsedPlannedRoute = parsePlannedRoute(plannedRoute);
 
       const plannedHrefRoute = parsedPlannedRoute ? parsedPlannedRoute.href : '/[country]';
       const plannedAsRoute = parsedPlannedRoute ? parsedPlannedRoute.as : '/us';
