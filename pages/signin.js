@@ -61,8 +61,6 @@ const Signin = () => {
       cookies.set(null, 'token', response.data.token, { path: '/' });
       const { plannedRoute } = cookies.get();
 
-      const parsedPlannedRoute = parsePlannedRoute(plannedRoute);
-
       const plannedHrefRoute = plannedRoute ? plannedRoute : '/[country]';
       const plannedAsRoute = plannedRoute ? plannedRoute.split('?')[0] : '/us';
 
