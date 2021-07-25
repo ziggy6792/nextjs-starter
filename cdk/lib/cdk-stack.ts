@@ -5,6 +5,9 @@ import * as ecs from '@aws-cdk/aws-ecs';
 import * as path from 'path';
 import * as ecs_patterns from '@aws-cdk/aws-ecs-patterns';
 import * as ecr from '@aws-cdk/aws-ecr';
+import * as elasticloadbalancing from '@aws-cdk/aws-elasticloadbalancingv2';
+import * as cloudfront from '@aws-cdk/aws-cloudfront';
+import * as origins from '@aws-cdk/aws-cloudfront-origins';
 
 // Stack properties - what region to deploy to
 const props = {
@@ -37,13 +40,17 @@ export class CdkStack extends cdk.Stack {
     const repository = ecr.Repository.fromRepositoryArn(this, 'MyRepo', 'arn:aws:ecr:ap-southeast-1:932244219675:repository/whire');
 
     // Create a load-balanced Fargate service and make it public
-    new ecs_patterns.ApplicationLoadBalancedFargateService(this, 'MyFargateService', {
+    const app = new ecs_patterns.ApplicationLoadBalancedFargateService(this, 'MyFargateService', {
       cluster: cluster, // Required
       cpu: 512, // Default is 256
       desiredCount: 6, // Default is 1
       taskImageOptions: { image: ecs.RepositoryImage.fromEcrRepository(repository, 'latest'), containerPort: 3000 },
       memoryLimitMiB: 2048, // Default is 512
       publicLoadBalancer: true, // Default is false
+    });
+
+    new cloudfront.Distribution(this, 'myDist', {
+      defaultBehavior: { origin: new origins.LoadBalancerV2Origin(app.loadBalancer) },
     });
   }
 }
